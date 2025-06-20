@@ -13,22 +13,22 @@
 
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cafeshop.FXMLDocumentController">
    <children>
-      <AnchorPane prefHeight="400.0" prefWidth="600.0">
+      <AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="white" stylesheets="@logindesign.css">
          <children>
-            <AnchorPane fx:id="loginForm" layoutX="286.0" prefHeight="400.0" prefWidth="300.0">
+            <AnchorPane fx:id="loginForm" layoutX="300.0" prefHeight="400.0" prefWidth="300.0">
                <children>
-                  <Label layoutX="99.0" layoutY="35.0" text="Login Account">
+                  <Label layoutX="99.0" layoutY="35.0" styleClass="head_level" stylesheets="@logindesign.css" text="Login Account" textFill="#2d6d9a">
                      <font>
-                        <Font size="20.0" />
+                        <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="username" layoutX="53.0" layoutY="112.0" prefHeight="30.0" prefWidth="220.0" promptText="Username" />
+                  <TextField fx:id="username" layoutX="53.0" layoutY="101.0" prefHeight="30.0" prefWidth="220.0" promptText="Username" />
                   <PasswordField fx:id="password" layoutX="53.0" layoutY="142.0" prefHeight="30.0" prefWidth="220.0" promptText="Password" />
-                  <Button fx:id="loginBtn" layoutX="53.0" layoutY="207.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="220.0" text="Login" />
-                  <Hyperlink fx:id="forgotpass" layoutX="53.0" layoutY="184.0" text="Forgot Passsword?" />
+                  <Button fx:id="loginBtn" layoutX="50.0" layoutY="237.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="220.0" styleClass="login_btn" stylesheets="@logindesign.css" text="Login" />
+                  <Hyperlink fx:id="forgotpass" layoutX="53.0" layoutY="200.0" text="Forgot Passsword?" />
                </children>
             </AnchorPane>
-            <AnchorPane prefHeight="400.0" prefWidth="300.0">
+            <AnchorPane prefHeight="400.0" prefWidth="300.0" visible="false">
                <children>
                   <Label layoutX="53.0" layoutY="56.0" text="Register Account">
                      <font>
@@ -39,20 +39,20 @@
                   <PasswordField fx:id="password_2" layoutX="53.0" layoutY="147.0" prefHeight="30.0" prefWidth="220.0" promptText="Password" />
                   <ComboBox fx:id="question" layoutX="53.0" layoutY="188.0" prefHeight="30.0" prefWidth="220.0" promptText="Question" />
                   <TextField fx:id="answer" layoutX="53.0" layoutY="236.0" prefHeight="30.0" prefWidth="220.0" promptText="Answer" />
-                  <Button fx:id="signup_Btn" layoutX="37.0" layoutY="281.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="220.0" text="Sign Up" />
+                  <Button fx:id="signup_Btn" layoutX="53.0" layoutY="283.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="220.0" text="Sign Up" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="sideForm" prefHeight="400.0" prefWidth="300.0" visible="false">
+            <AnchorPane fx:id="sideForm" prefHeight="400.0" prefWidth="300.0" styleClass="gradient" stylesheets="@logindesign.css">
                <children>
-                  <Button fx:id="sideCreateBtn" layoutX="29.0" layoutY="334.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="220.0" text="Create new account" />
-                  <Label layoutX="75.0" layoutY="293.0" text="Create Account">
+                  <Button fx:id="sideCreateBtn" layoutX="56.0" layoutY="340.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="220.0" text="Create new account" />
+                  <Label layoutX="82.0" layoutY="255.0" text="Create Account">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <FontAwesomeIconView glyphName="COFFEE" layoutX="37.0" layoutY="188.0" size="13EM" wrappingWidth="77.0" />
+                  <FontAwesomeIconView fill="#ebe7e7" glyphName="COFFEE" layoutX="75.0" layoutY="177.0" size="13EM" wrappingWidth="91.0" />
                   <Label layoutX="65.0" layoutY="211.0" text="Cafe Shop Management System" />
-                  <Button fx:id="alreadyHave" layoutX="33.0" layoutY="334.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="220.0" text="Already have an account" />
+                  <Button fx:id="alreadyHave" layoutX="56.0" layoutY="294.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="220.0" text="Already have an account" />
                </children>
             </AnchorPane>
          </children>
