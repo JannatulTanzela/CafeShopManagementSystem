@@ -54,6 +54,8 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private Button alreadyHave;
+    @FXML
+    private AnchorPane signupform;
     
     
     @Override
