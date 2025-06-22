@@ -4,6 +4,7 @@
  */
 package cafeshop;
 
+import com.sun.jdi.connect.spi.Connection;
 import java.net.URL;
 
 import java.util.ResourceBundle;
@@ -56,6 +57,10 @@ public class FXMLDocumentController implements Initializable {
     private Button alreadyHave;
     @FXML
     private AnchorPane signupform;
+    
+    private Connection connect;
+    private PreparedStatement prepare;
+    private ResultSet Result;
     
     
     @Override

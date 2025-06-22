@@ -28,7 +28,7 @@
                   <Hyperlink fx:id="forgotpass" layoutX="53.0" layoutY="200.0" text="Forgot Passsword?" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="signupform" prefHeight="400.0" prefWidth="300.0" styleClass="white" stylesheets="@logindesign.css" visible="false">
+            <AnchorPane fx:id="signupform" prefHeight="400.0" prefWidth="300.0" styleClass="white" stylesheets="@logindesign.css">
                <children>
                   <Label layoutX="53.0" layoutY="56.0" styleClass="head_level" stylesheets="@logindesign.css" text="Register Account" textFill="#3350a8">
                      <font>
@@ -50,9 +50,9 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <FontAwesomeIcon fill="#ebe7e7" glyphName="COFFEE" layoutX="75.0" layoutY="177.0" size="13EM" wrappingWidth="91.0" />
                   <Label layoutX="65.0" layoutY="211.0" text="Cafe Shop Management System" />
                   <Button fx:id="alreadyHave" layoutX="56.0" layoutY="294.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="220.0" text="Already have an account" />
+                  <FontAwesomeIcon glyphName="COFFEE" layoutX="86.0" layoutY="175.0" size="9em" wrappingWidth="16.857142448425293" />
                </children>
             </AnchorPane>
          </children>
