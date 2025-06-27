@@ -68,56 +68,83 @@ public class FXMLDocumentController implements Initializable {
     private Connection connect;
     private PreparedStatement prepare;
     private ResultSet Result;
-    
+
     private Alert alert;
-    
-    public void regBtn(){
-        if(username_2.getText().isEmpty() || password_2.getText().isEmpty() || 
-                 question.getSelectionModel().getSelectedItem() ==null
-                || answer.getText().isEmpty()){
-            alert = new Alert (AlertType.ERROR);
+
+    @FXML
+    public void regBtn() {
+        if (username_2.getText().isEmpty() || password_2.getText().isEmpty()
+                || question.getSelectionModel().getSelectedItem() == null
+                || answer.getText().isEmpty()) {
+            alert = new Alert(AlertType.ERROR);
             alert.setTitle("Error Message");
             alert.setHeaderText(null);
             alert.setContentText("Please fill all blank fields");
             alert.showAndWait();
-        }
-        else{
-            
+        } else {
+
             String regData = " INSERT INTO employee (username,password,question,answer)"
                     + "VALUES(?,?,?,?)";
             connect = database.connectDB();
-            
-            try{
-                
-                prepare =  (PreparedStatement) connect.prepareStatement(regData);
-                prepare.setString(1,username_2.getText());
-                 prepare.setString(2,password_2.getText());
-                  prepare.setString(3,(String)question.getSelectionModel().getSelectedItem());
-                   prepare.setString(4,answer.getText());
-            
-            }catch(Exception e) {e.printStackTrace();};
-        
-        }
-        
-    }
-    
 
-    private String[] questionList  =  {"What is your favorite Color?" , "What is your favorite food?" , "What is your birthdate?"};
-    public void regLquestionList(){
-       
+            try {
+
+                prepare = (PreparedStatement) connect.prepareStatement(regData);
+                prepare.setString(1, username_2.getText());
+                prepare.setString(2, password_2.getText());
+                prepare.setString(3, (String) question.getSelectionModel().getSelectedItem());
+                prepare.setString(4, answer.getText());
+
+                prepare.executeUpdate();
+
+                alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Information Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Successfully registered Acoount");
+                alert.showAndWait();
+
+                username_2.setText("");
+                password_2.setText("");
+                question.getSelectionModel().clearSelection();
+                answer.setText("");
+
+                TranslateTransition slider = new TranslateTransition();
+
+                //slider.setNode(sideForm);
+                slider.setToX(0);
+                slider.setDuration(Duration.seconds(.5));
+
+                slider.setOnFinished((ActionEvent e) -> {
+                    alreadyHave.setVisible(false);
+                    sideCreateBtn.setVisible(true);
+
+                });
+
+                slider.play();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            };
+
+        }
+
+    }
+
+    private String[] questionList = {"What is your favorite Color?", "What is your favorite food?", "What is your birthdate?"};
+
+    public void regLquestionList() {
+
         List<String> listQ = new ArrayList<>();
-        
-        for(String data: questionList){
+
+        for (String data : questionList) {
             listQ.add(data);
         }
-        
-        ObservableList listData = FXCollections.observableArrayList(listQ);
-        
-        question.setItems(listData);
-       
-    }        
-   
 
+        ObservableList listData = FXCollections.observableArrayList(listQ);
+
+        question.setItems(listData);
+
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -135,7 +162,7 @@ public class FXMLDocumentController implements Initializable {
             slider.setOnFinished((ActionEvent e) -> {
                 alreadyHave.setVisible(true);
                 sideCreateBtn.setVisible(false);
-                
+
                 regLquestionList();
             });
         } else if (event.getSource() == alreadyHave) {

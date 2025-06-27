@@ -23,8 +23,8 @@ public class CafeShop extends Application {
         Scene scene = new Scene(root);
         
         stage.setTitle("Cafe Shop Management System");
-        stage.setMinHeight(400);
-        stage.setMinWidth(600);
+        stage.setMinHeight(450);
+        stage.setMinWidth(610);
         
         
         stage.setScene(scene);
