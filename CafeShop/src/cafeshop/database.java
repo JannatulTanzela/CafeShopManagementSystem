@@ -4,7 +4,8 @@
  */
 package cafeshop;
 
-import com.mysql.jdbc.Connection;
+import java.sql.Connection;
+import java.sql.DriverManager;
 
 /**
  *
@@ -16,7 +17,7 @@ public class database {
 
         try {
 
-            Class.forName("com.mysql.jbdc.Driver");
+            Class.forName("com.mysql.jdbc.Driver");
             Connection connect = DriverManager.getConnection("jdbc:mysql://localhost/cafe", "root", "");
             return connect;
 

@@ -4,8 +4,9 @@
  */
 package cafeshop;
 
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.PreparedStatement;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,9 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 
 /**
  *
@@ -100,7 +104,7 @@ public class FXMLDocumentController implements Initializable {
                 alert = new Alert(AlertType.INFORMATION);
                 alert.setTitle("Information Message");
                 alert.setHeaderText(null);
-                alert.setContentText("Successfully registered Acoount");
+                alert.setContentText("Successfully registered Acount");
                 alert.showAndWait();
 
                 username_2.setText("");
@@ -110,7 +114,7 @@ public class FXMLDocumentController implements Initializable {
 
                 TranslateTransition slider = new TranslateTransition();
 
-                //slider.setNode(sideForm);
+                slider.setNode(sideForm);
                 slider.setToX(0);
                 slider.setDuration(Duration.seconds(.5));
 
@@ -148,7 +152,7 @@ public class FXMLDocumentController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+         regLquestionList();
     }
 
     @FXML
