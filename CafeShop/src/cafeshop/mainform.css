@@ -1,0 +1,10 @@
+/*
+ * Empty Stylesheet file.
+ */
+
+.header{
+     -fx-background-color: linear-gradiant(to bottom right,#42c1fc , #2e9be4);
+}
+.nav-form{
+     -fx-background-color: linear-gradiant(to bottom right, #095894 , #2d6d9a);
+}

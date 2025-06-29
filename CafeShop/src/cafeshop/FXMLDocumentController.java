@@ -74,6 +74,53 @@ public class FXMLDocumentController implements Initializable {
     private ResultSet Result;
 
     private Alert alert;
+    
+    
+    @FXML
+    public void loginBtn() {
+
+        if (username.getText().isEmpty() || password.getText().isEmpty()) {
+            alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error Message");
+            alert.setHeaderText(null);
+            alert.setContentText("Incorrect Username/Password");
+            alert.showAndWait();
+        } else {
+
+            String selectData = "SELECT username, password FROM employee WHERE username = ? and password = ?";
+
+            connect = database.connectDB();
+
+            try {
+                
+                
+                prepare = connect.prepareStatement(selectData);
+                prepare.setString(1, username.getText());
+                prepare.setString(2, password.getText());
+
+                Result = prepare.executeQuery();
+
+                if (Result.next()) {
+                    alert = new Alert(AlertType.INFORMATION);
+                    alert.setTitle("Information Message");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Successfully Login ");
+                    alert.showAndWait();
+                } else {
+                    alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error Message");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Incorrect username/password ");
+                    alert.showAndWait();
+
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            };
+
+        }
+    }
 
     @FXML
     public void regBtn() {
@@ -92,7 +139,25 @@ public class FXMLDocumentController implements Initializable {
             connect = database.connectDB();
 
             try {
-
+                
+                String checkUsername = "SELECT usernameFrom employee WHERE username ='" + username_2.getText() + "'";
+                prepare =connect.prepareStatement(checkUsername);
+                Result = prepare.executeQuery();
+                
+                if(Result.next()){
+                    alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error Message");
+                    alert.setHeaderText(null);
+                    alert.setContentText(username_2.getText()+ " is already taken");
+                    alert.showAndWait();
+                }else if (password_2.getText().length ()< 8){
+                    alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error Message");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Invalid Password,atleast 8 characters are needed");
+                    alert.showAndWait();
+                }else{
+                    
                 prepare = (PreparedStatement) connect.prepareStatement(regData);
                 prepare.setString(1, username_2.getText());
                 prepare.setString(2, password_2.getText());
@@ -124,8 +189,10 @@ public class FXMLDocumentController implements Initializable {
 
                 });
 
-                slider.play();
-
+                slider.play();     
+          
+                }
+                               
             } catch (Exception e) {
                 e.printStackTrace();
             };
