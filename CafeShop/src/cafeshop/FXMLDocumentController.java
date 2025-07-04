@@ -30,6 +30,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 
 /**
@@ -74,6 +78,10 @@ public class FXMLDocumentController implements Initializable {
     private ResultSet Result;
 
     private Alert alert;
+    @FXML
+    private AnchorPane loginForm1;
+    @FXML
+    private Button loginBtn1;
     
     
     @FXML
@@ -106,6 +114,24 @@ public class FXMLDocumentController implements Initializable {
                     alert.setHeaderText(null);
                     alert.setContentText("Successfully Login ");
                     alert.showAndWait();
+                    
+                   Parent root = FXMLLoader.load(getClass().getResource("mainForm.fxml")) ;
+                   
+                   Stage stage = new Stage();
+                   Scene scene = new Scene(root);
+                   
+                   stage.setTitle("Cafe Shop Management System");
+                   stage.setMinWidth(1100);
+                   stage.setMinHeight(600);
+                   
+                   stage.setScene(scene);
+                   stage.show();
+                   
+                   loginBtn.getScene().getWindow().hide();
+                   
+                    
+                    
+                    
                 } else {
                     alert = new Alert(AlertType.ERROR);
                     alert.setTitle("Error Message");
