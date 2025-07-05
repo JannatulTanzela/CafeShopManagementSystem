@@ -3,8 +3,14 @@
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
 <?import java.lang.String?>
 <?import java.net.URL?>
+<?import javafx.scene.chart.AreaChart?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>
@@ -38,21 +44,23 @@
                                     <Font size="15.0" />
                                  </font>
                               </Label>
-                              <Button layoutX="12.0" layoutY="217.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="210.0" styleClass="nav-btn" stylesheets="@mainform.css" text="INVENTORY" />
-                              <Button layoutX="12.0" layoutY="273.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="210.0" styleClass="nav-btn" stylesheets="@mainform.css" text="MENU" />
-                              <Button layoutX="12.0" layoutY="324.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="210.0" styleClass="nav-btn" stylesheets="@mainform.css" text="CUSTOMERS" />
-                              <Button layoutX="13.0" layoutY="560.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="27.0" stylesheets="@mainform.css" textFill="#0a2797" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="14.0">
+                              <Button fx:id="dashboard_btn" layoutX="12.0" layoutY="162.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="210.0" styleClass="nav-btn" stylesheets="@mainform.css" text="Dashboard" />
+                              <Button fx:id="inventory_btn" layoutX="12.0" layoutY="217.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="210.0" styleClass="nav-btn" stylesheets="@mainform.css" text="INVENTORY" />
+                              <Button fx:id="menu_btn" layoutX="12.0" layoutY="273.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="210.0" styleClass="nav-btn" stylesheets="@mainform.css" text="MENU" />
+                              <Button fx:id="customers_btn" layoutX="12.0" layoutY="324.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="210.0" styleClass="nav-btn" stylesheets="@mainform.css" text="CUSTOMERS" />
+                              <Button fx:id="logout_btn" layoutX="13.0" layoutY="560.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="27.0" stylesheets="@mainform.css" textFill="#0a2797" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="14.0">
                                  <styleClass>
                                     <String fx:value="logout" />
                                     <String fx:value="shadow" />
-                                 </styleClass></Button>
-                              <FontAwesomeIcon fill="#fbfcff" glyphName="SIGN_OUT" layoutX="15.0" layoutY="583.0" size="2em" text="" wrappingWidth="22.285715103149414" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="14.0" />
-                              <Label layoutX="41.0" layoutY="564.0" prefHeight="17.0" prefWidth="72.0" text=" Sign Out" textFill="#f5efef" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="41.0">
+                                 </styleClass>
+                                 <graphic>
+                                    <FontAwesomeIcon fill="#fbfcff" glyphName="SIGN_OUT" size="2em" text="" wrappingWidth="22.285715103149414" />
+                                 </graphic></Button>
+                              <Label layoutX="55.0" layoutY="561.0" prefHeight="17.0" prefWidth="72.0" text=" Sign Out" textFill="#f5efef" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="55.0">
                                  <font>
                                     <Font size="15.0" />
                                  </font>
                               </Label>
-                              <Button layoutX="12.0" layoutY="162.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="210.0" styleClass="nav-btn" stylesheets="@mainform.css" text="Dashboard" />
                            </children>
                         </AnchorPane>
                      </children>
@@ -63,20 +71,127 @@
                      <children>
                         <AnchorPane prefHeight="600.0" prefWidth="870.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <AnchorPane layoutX="14.0" layoutY="14.0" prefHeight="153.0" prefWidth="847.0" stylesheets="@mainform.css">
+                              <AnchorPane layoutX="14.0" layoutY="14.0" prefHeight="153.0" prefWidth="847.0" stylesheets="@mainform.css" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="14.0">
                                  <styleClass>
                                     <String fx:value="white-bg" />
                                     <String fx:value="radius" />
                                     <String fx:value="shadow" />
                                  </styleClass>
+                                 <children>
+                                    <ScrollPane layoutX="238.0" layoutY="-23.0" prefHeight="177.0" prefWidth="843.0" styleClass="transparent" stylesheets="@mainform.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                      <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="154.0" prefWidth="1015.0">
+                                             <children>
+                                                <AnchorPane layoutX="14.0" layoutY="8.0" prefHeight="126.0" prefWidth="254.0" styleClass="nav-form" stylesheets="@mainform.css">
+                                                   <children>
+                                                      <FontAwesomeIcon fill="#fcfafa" glyphName="USERS" layoutX="14.0" layoutY="84.0" size="5em" wrappingWidth="70.8571424484253" />
+                                                      <Label layoutX="85.0" layoutY="93.0" text="Number of Customers" textFill="WHITE">
+                                                         <font>
+                                                            <Font size="15.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label alignment="CENTER_RIGHT" layoutX="93.0" layoutY="14.0" prefHeight="21.0" prefWidth="144.0" text="0" textFill="WHITE">
+                                                         <font>
+                                                            <Font size="15.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </AnchorPane>
+                                                <AnchorPane layoutX="286.0" layoutY="8.0" prefHeight="126.0" prefWidth="254.0" styleClass="nav-form" stylesheets="@mainform.css">
+                                                   <children>
+                                                      <FontAwesomeIcon fill="#fcfafa" glyphName="DOLLAR" layoutX="14.0" layoutY="84.0" size="5em" wrappingWidth="70.8571424484253" />
+                                                      <Label layoutX="85.0" layoutY="93.0" text="Today's Income" textFill="WHITE">
+                                                         <font>
+                                                            <Font size="15.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label alignment="CENTER_RIGHT" layoutX="93.0" layoutY="14.0" prefHeight="21.0" prefWidth="144.0" text="\$0.0" textFill="WHITE">
+                                                         <font>
+                                                            <Font size="15.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </AnchorPane>
+                                                <AnchorPane layoutX="827.0" layoutY="8.0" prefHeight="126.0" prefWidth="254.0" styleClass="nav-form" stylesheets="@mainform.css">
+                                                   <children>
+                                                      <FontAwesomeIcon fill="#fcfafa" glyphName="SHOPPING_CART" layoutX="14.0" layoutY="84.0" size="5em" wrappingWidth="70.8571424484253" />
+                                                      <Label layoutX="85.0" layoutY="93.0" text="Number of Sold Products" textFill="WHITE">
+                                                         <font>
+                                                            <Font size="14.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label alignment="CENTER_RIGHT" layoutX="93.0" layoutY="14.0" prefHeight="21.0" prefWidth="144.0" text="0" textFill="WHITE">
+                                                         <font>
+                                                            <Font size="15.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </AnchorPane>
+                                                <AnchorPane layoutX="556.0" layoutY="8.0" prefHeight="126.0" prefWidth="254.0" styleClass="nav-form" stylesheets="@mainform.css">
+                                                   <children>
+                                                      <FontAwesomeIcon fill="#fcfafa" glyphName="MONEY" layoutX="14.0" layoutY="84.0" size="5em" wrappingWidth="70.8571424484253" />
+                                                      <Label layoutX="85.0" layoutY="93.0" text="Total Income" textFill="WHITE">
+                                                         <font>
+                                                            <Font size="15.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label alignment="CENTER_RIGHT" layoutX="93.0" layoutY="14.0" prefHeight="21.0" prefWidth="144.0" text="\$0.0" textFill="WHITE">
+                                                         <font>
+                                                            <Font size="15.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </AnchorPane>
+                                             </children>
+                                          </AnchorPane>
+                                      </content>
+                                    </ScrollPane>
+                                 </children>
                               </AnchorPane>
-                              <AnchorPane layoutX="15.0" layoutY="179.0" prefHeight="414.0" prefWidth="845.0" stylesheets="@mainform.css">
+                              <AnchorPane layoutX="15.0" layoutY="181.0" prefHeight="414.0" prefWidth="845.0" stylesheets="@mainform.css" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="206.0">
                                  <styleClass>
                                     <String fx:value="white-bg" />
                                     <String fx:value="radius" />
                                     <String fx:value="shadow" />
                                  </styleClass>
+                                 <children>
+                                    <AnchorPane layoutX="14.0" layoutY="14.0" prefHeight="344.0" prefWidth="414.0" stylesheets="@mainform.css" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="415.0" AnchorPane.topAnchor="18.0">
+                                       <styleClass>
+                                          <String fx:value="white-bg" />
+                                          <String fx:value="shadow" />
+                                          <String fx:value="radius" />
+                                       </styleClass>
+                                       <children>
+                                          <AreaChart layoutX="-35.0" layoutY="-13.0" prefHeight="387.0" prefWidth="465.0" title="Income's Chart" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <xAxis>
+                                              <CategoryAxis side="BOTTOM" />
+                                            </xAxis>
+                                            <yAxis>
+                                              <NumberAxis side="LEFT" />
+                                            </yAxis>
+                                          </AreaChart>
+                                       </children>
+                                    </AnchorPane>
+                                    <AnchorPane layoutX="477.0" layoutY="14.0" prefHeight="344.0" prefWidth="382.0" stylesheets="@mainform.css" AnchorPane.bottomAnchor="18.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="18.0">
+                                       <styleClass>
+                                          <String fx:value="white-bg" />
+                                          <String fx:value="shadow" />
+                                          <String fx:value="radius" />
+                                       </styleClass>
+                                       <children>
+                                          <BarChart layoutX="-30.0" layoutY="-45.0" prefHeight="344.0" prefWidth="352.0" title="Customer's Chart" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <xAxis>
+                                              <CategoryAxis side="BOTTOM" />
+                                            </xAxis>
+                                            <yAxis>
+                                              <NumberAxis side="LEFT" />
+                                            </yAxis>
+                                          </BarChart>
+                                       </children>
+                                    </AnchorPane>
+                                 </children>
                               </AnchorPane>
+                              <Separator layoutX="14.0" layoutY="181.0" prefHeight="14.0" prefWidth="841.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" />
                            </children>
                         </AnchorPane>
                      </children></AnchorPane>
