@@ -53,7 +53,7 @@
                               <Button fx:id="inventory_btn" layoutX="12.0" layoutY="217.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="210.0" styleClass="nav-btn" stylesheets="@mainform.css" text="INVENTORY" />
                               <Button fx:id="menu_btn" layoutX="12.0" layoutY="273.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="210.0" styleClass="nav-btn" stylesheets="@mainform.css" text="MENU" />
                               <Button fx:id="customers_btn" layoutX="12.0" layoutY="324.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="210.0" styleClass="nav-btn" stylesheets="@mainform.css" text="CUSTOMERS" />
-                              <Button fx:id="logout_btn" layoutX="13.0" layoutY="560.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="27.0" stylesheets="@mainform.css" textFill="#0a2797" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="14.0">
+                              <Button fx:id="logout_btn" layoutX="13.0" layoutY="560.0" mnemonicParsing="false" onAction="#logout" prefHeight="25.0" prefWidth="27.0" stylesheets="@mainform.css" textFill="#0a2797" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="14.0">
                                  <styleClass>
                                     <String fx:value="logout" />
                                     <String fx:value="shadow" />
@@ -236,31 +236,31 @@
                                     <String fx:value="shadow" />
                                  </styleClass>
                                  <children>
-                                    <Label layoutX="51.0" layoutY="35.0" text="ID Product : ">
+                                    <Label layoutX="51.0" layoutY="35.0" text="Product ID : ">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
                                     </Label>
-                                    <TextField layoutX="137.0" layoutY="33.0" prefHeight="25.0" prefWidth="142.0" />
+                                    <TextField fx:id="inventory_productID" layoutX="137.0" layoutY="33.0" prefHeight="25.0" prefWidth="142.0" />
                                     <Label layoutX="33.0" layoutY="74.0" text="Product name : ">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
                                     </Label>
-                                    <TextField layoutX="430.0" layoutY="33.0" prefHeight="25.0" prefWidth="182.0" promptText="0" />
+                                    <TextField fx:id="inventory_stock" layoutX="430.0" layoutY="33.0" prefHeight="25.0" prefWidth="182.0" promptText="0" />
                                     <Label layoutX="90.0" layoutY="115.0" text="Type : ">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
                                     </Label>
-                                    <ComboBox layoutX="136.0" layoutY="113.0" prefHeight="25.0" prefWidth="184.0" promptText="Choose Type..." />
-                                    <TextField layoutX="137.0" layoutY="72.0" prefHeight="25.0" prefWidth="182.0" />
+                                    <ComboBox fx:id="inventory_type" layoutX="136.0" layoutY="113.0" prefHeight="25.0" prefWidth="184.0" promptText="Choose Type..." />
+                                    <TextField fx:id="inventory_productName" layoutX="137.0" layoutY="72.0" prefHeight="25.0" prefWidth="182.0" />
                                     <Label layoutX="376.0" layoutY="36.0" text="Stock :">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
                                     </Label>
-                                    <TextField layoutX="430.0" layoutY="73.0" prefHeight="25.0" prefWidth="182.0" promptText="\$0.0" />
+                                    <TextField fx:id="inventory_price" layoutX="430.0" layoutY="73.0" prefHeight="25.0" prefWidth="182.0" promptText="\$0.0" />
                                     <Label layoutX="364.0" layoutY="75.0" text="Price($) :">
                                        <font>
                                           <Font size="14.0" />
@@ -285,7 +285,7 @@
                                           <Font size="14.0" />
                                        </font>
                                     </Label>
-                                    <ComboBox layoutX="429.0" layoutY="116.0" prefHeight="25.0" prefWidth="184.0" promptText="Choose Status..." />
+                                    <ComboBox fx:id="inventory_status" layoutX="429.0" layoutY="116.0" prefHeight="25.0" prefWidth="184.0" promptText="Choose Status..." />
                                  </children>
                               </AnchorPane>
                               <Separator layoutX="15.0" layoutY="290.0" prefHeight="10.0" prefWidth="842.0" AnchorPane.bottomAnchor="283.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="12.0" />

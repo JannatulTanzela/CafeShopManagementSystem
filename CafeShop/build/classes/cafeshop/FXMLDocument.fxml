@@ -28,7 +28,7 @@
                   <Hyperlink fx:id="forgotpass" layoutX="53.0" layoutY="200.0" text="Forgot Passsword?" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="signupform" prefHeight="400.0" prefWidth="300.0" styleClass="white" stylesheets="@logindesign.css">
+            <AnchorPane fx:id="signupform" prefHeight="400.0" prefWidth="300.0" styleClass="white" stylesheets="@logindesign.css" visible="false">
                <children>
                   <Label layoutX="53.0" layoutY="56.0" styleClass="head_level" stylesheets="@logindesign.css" text="Register Account" textFill="#3350a8">
                      <font>
@@ -37,7 +37,7 @@
                   </Label>
                   <TextField fx:id="username_2" layoutX="53.0" layoutY="105.0" onAction="#regBtn" prefHeight="30.0" prefWidth="220.0" promptText="Username" />
                   <PasswordField fx:id="password_2" layoutX="53.0" layoutY="147.0" onAction="#regBtn" prefHeight="30.0" prefWidth="220.0" promptText="Password" />
-                  <ComboBox fx:id="question" layoutX="53.0" layoutY="188.0" onAction="#regBtn" prefHeight="30.0" prefWidth="220.0" promptText="Question" />
+                  <ComboBox fx:id="question" layoutX="53.0" layoutY="188.0" prefHeight="30.0" prefWidth="220.0" promptText="Question" />
                   <TextField fx:id="answer" layoutX="53.0" layoutY="236.0" onAction="#regBtn" prefHeight="30.0" prefWidth="220.0" promptText="Answer" />
                   <Button fx:id="signup_Btn" layoutX="53.0" layoutY="283.0" mnemonicParsing="false" onAction="#regBtn" prefHeight="40.0" prefWidth="220.0" styleClass="login_btn" stylesheets="@logindesign.css" text="Sign Up" />
                </children>
