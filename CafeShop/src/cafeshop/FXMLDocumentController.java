@@ -71,18 +71,20 @@ public class FXMLDocumentController implements Initializable {
     private Button alreadyHave;
     @FXML
     private AnchorPane signupform;
+    @FXML
+    private AnchorPane loginForm1;
+    @FXML
+    private Button loginBtn1;
 
     private Connection connect;
     private PreparedStatement prepare;
     private ResultSet Result;
 
     private Alert alert;
-    @FXML
-    private AnchorPane loginForm1;
-    @FXML
-    private Button loginBtn1;
+    
+    
 
-    @FXML
+    //@FXML
     public void loginBtn() {
 
         if (username.getText().isEmpty() || password.getText().isEmpty()) {
@@ -105,18 +107,14 @@ public class FXMLDocumentController implements Initializable {
                 Result = prepare.executeQuery();
 
                 if (Result.next()) {
-                    
+
                     data.username1 = username.getText();
-                    
-                    
+
                     alert = new Alert(AlertType.INFORMATION);
                     alert.setTitle("Information Message");
                     alert.setHeaderText(null);
                     alert.setContentText("Successfully Login ");
                     alert.showAndWait();
-                    
-                    
-                    
 
                     Parent root = FXMLLoader.load(getClass().getResource("mainForm.fxml"));
 
@@ -131,10 +129,7 @@ public class FXMLDocumentController implements Initializable {
                     stage.show();
 
                     loginBtn.getScene().getWindow().hide();
-                    
-                    
-                    
-                    
+
                 } else {
                     alert = new Alert(AlertType.ERROR);
                     alert.setTitle("Error Message");

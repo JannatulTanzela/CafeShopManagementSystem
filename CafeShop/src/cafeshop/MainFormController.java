@@ -5,9 +5,11 @@
 package cafeshop;
 
 import static cafeshop.data.username1;
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.PreparedStatement;
-import com.mysql.jdbc.Statement;
+import java.io.File;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +31,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
 /**
@@ -93,42 +99,78 @@ public class MainFormController implements Initializable {
     @FXML
     private TextField inventory_price;
     @FXML
-    private ComboBox<?> inventory_status;
+    private ComboBox<String> inventory_status;
     @FXML
-    private ComboBox<?> inventory_type;
+    private ComboBox<String> inventory_type;
 
     private Alert alert;
 
     private Connection connect;
     private PreparedStatement prepare;
     private Statement statement;
-    private ResultSet Result;
+    private ResultSet result;
+    
+    private Image image;
+    
+    
+
+    public void inventoryAddBtn() {
+        if (inventory_productID.getText().isEmpty()
+                || inventory_productName.getText().isEmpty()
+                || inventory_type.getSelectionModel().getSelectedItem() == null
+                || inventory_stock.getText().isEmpty()
+                || inventory_price.getText().isEmpty()
+                || inventory_status.getSelectionModel().getSelectedItem() == null
+                || data.path == null){
+        
+        }
+            
+    }
+    
+    @FXML
+    public void inventoryImportBtn(){
+        FileChooser openFile= new FileChooser();
+        openFile.getExtensionFilters().add(new ExtensionFilter("Open Image File","*png", "*jpg"));
+        
+        File file =openFile.showOpenDialog(main_form.getScene().getWindow());
+        
+        if(file !=null){
+            
+            data.path = file.getAbsolutePath();
+            image = new Image(file.toURI().toString(),139,148,false,true);
+            inventory_imageView.setImage(image);
+            
+        }
+        
+        
+    }
 
     public ObservableList<productData> inventoryDataList() {
 
         ObservableList<productData> listData = FXCollections.observableArrayList();
         String sql = "SELECT * FROM product";
 
-        connect = database.connectDB();
+        Connection connect = database.connectDB();
 
         try {
-            prepare = connect.prepareStatement(sql);
-            Result = prepare.executeQuery();
+            PreparedStatement prepare = connect.prepareStatement(sql);
+
+            result = (ResultSet) prepare.executeQuery();
 
             productData prodData;
 
-            while (Result.next()) {
+            while (result.next()) {
                 prodData = new productData(
                         result.getInt("id"),
-                        result.getString("productId"),
-                        result.getString("ProductName"),
+                        result.getString("prod_id"),
+                        result.getString("prod_name"),
                         result.getString("type"),
                         result.getInt("stock"),
                         result.getDouble("price"),
                         result.getString("status"),
                         result.getString("image"),
-                        result.getDate("date"));
-
+                        result.getDate("date")
+                );
                 listData.add(prodData);
 
             }
