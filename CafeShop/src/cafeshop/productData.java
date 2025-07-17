@@ -21,6 +21,7 @@ public class productData {
     private String status;
     private String image;
     private Date date;
+    private Integer quantity;
 
     public productData(Integer id, String productId, String productName, String type,
             Integer stock, Double price, String status, String image, Date date) {
@@ -33,6 +34,18 @@ public class productData {
         this.status = status;
         this.image = image;
         this.date = date;
+    }
+    
+    public productData(Integer id, String productId, String productName, 
+            String type, Integer quantity, Double price, String image, java.sql.Date date){
+        this.id = id;
+        this.productId = productId;
+        this.productName = productName;
+        this.type = type;
+        this.price = price;
+        this.image = image;
+        this.date = date;
+        this.quantity = quantity;
     }
 
     public Integer getId() {

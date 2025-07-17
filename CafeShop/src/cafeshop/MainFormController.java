@@ -25,6 +25,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -54,6 +55,33 @@ public class MainFormController implements Initializable {
     private PreparedStatement prepare;
     private ResultSet result;
     private Image image;
+    @FXML
+    private ScrollPane menu_scrollPane;
+    @FXML
+    private GridPane menu_gridPane;
+    @FXML
+    private TableView<?> menu_tableView;
+    @FXML
+    private TableColumn<?, ?> menu_col_productName;
+    @FXML
+    private TableColumn<?, ?> menu_col_quantity;
+    @FXML
+    private TableColumn<?, ?> menu_col_price;
+    @FXML
+    private Label menu_total;
+    @FXML
+    private TextField menu_amount;
+    @FXML
+    private Label menu_change;
+    @FXML
+    private Button menu_payBtn;
+    @FXML
+    private Button menu_removeBtn;
+    @FXML
+    private Button menu_receiptBtn;
+    
+    
+     private ObservableList<productData> cardListData = FXCollections.observableArrayList();
 
     @FXML
     public void inventoryAddBtn() {
@@ -350,6 +378,10 @@ public class MainFormController implements Initializable {
     public void inventoryStatusList() {
         inventory_status.setItems(FXCollections.observableArrayList(statusList));
     }
+    
+    
+    private ObservableList<productData> menuGetData;
+    return cardListData;
 
     @FXML
     public void logout() {
