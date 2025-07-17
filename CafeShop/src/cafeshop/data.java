@@ -12,6 +12,8 @@ public class data {
     
     public static String username1;
     public static String path;
+    static Integer id;
+    static String date;
    
     
     

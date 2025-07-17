@@ -81,8 +81,6 @@ public class FXMLDocumentController implements Initializable {
     private ResultSet Result;
 
     private Alert alert;
-    
-    
 
     //@FXML
     public void loginBtn() {
@@ -157,15 +155,14 @@ public class FXMLDocumentController implements Initializable {
             alert.setContentText("Please fill all blank fields");
             alert.showAndWait();
         } else {
+            String checkUsername = "SELECT username FROM employee WHERE username = ?";
+            String regData = "INSERT INTO employee (username, password, question, answer, date) VALUES (?, ?, ?, ?, ?)";
 
-            String regData = " INSERT INTO employee (username,password,question,answer)"
-                    + "VALUES(?,?,?,?)";
             connect = database.connectDB();
 
             try {
-
-                String checkUsername = "SELECT username From employee WHERE username ='" + username_2.getText() + "'";
                 prepare = connect.prepareStatement(checkUsername);
+                prepare.setString(1, username_2.getText());
                 Result = prepare.executeQuery();
 
                 if (Result.next()) {
@@ -178,51 +175,46 @@ public class FXMLDocumentController implements Initializable {
                     alert = new Alert(AlertType.ERROR);
                     alert.setTitle("Error Message");
                     alert.setHeaderText(null);
-                    alert.setContentText("Invalid Password,atleast 8 characters are needed");
+                    alert.setContentText("Invalid Password, at least 8 characters are needed");
                     alert.showAndWait();
                 } else {
-
-                    prepare = (PreparedStatement) connect.prepareStatement(regData);
+                    prepare = connect.prepareStatement(regData);
                     prepare.setString(1, username_2.getText());
                     prepare.setString(2, password_2.getText());
-                    prepare.setString(3, (String) question.getSelectionModel().getSelectedItem());
+                    prepare.setString(3, question.getSelectionModel().getSelectedItem());
                     prepare.setString(4, answer.getText());
+                    prepare.setDate(5, new java.sql.Date(new java.util.Date().getTime())); // Registration date
 
                     prepare.executeUpdate();
 
                     alert = new Alert(AlertType.INFORMATION);
                     alert.setTitle("Information Message");
                     alert.setHeaderText(null);
-                    alert.setContentText("Successfully registered Acount");
+                    alert.setContentText("Successfully registered account!");
                     alert.showAndWait();
 
-                    username_2.setText("");
-                    password_2.setText("");
+                    // Clear inputs
+                    username_2.clear();
+                    password_2.clear();
                     question.getSelectionModel().clearSelection();
-                    answer.setText("");
+                    answer.clear();
 
+                    // Animate slider (show login form)
                     TranslateTransition slider = new TranslateTransition();
-
                     slider.setNode(sideForm);
                     slider.setToX(0);
-                    slider.setDuration(Duration.seconds(.5));
-
+                    slider.setDuration(Duration.seconds(0.5));
                     slider.setOnFinished((ActionEvent e) -> {
                         alreadyHave.setVisible(false);
                         sideCreateBtn.setVisible(true);
-
                     });
-
                     slider.play();
-
                 }
 
             } catch (Exception e) {
                 e.printStackTrace();
-            };
-
+            }
         }
-
     }
 
     private String[] questionList = {"What is your favorite Color?", "What is your favorite food?", "What is your birthdate?"};

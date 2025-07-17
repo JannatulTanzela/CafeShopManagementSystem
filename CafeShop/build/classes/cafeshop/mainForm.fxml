@@ -18,6 +18,8 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
@@ -204,7 +206,7 @@
                               <Separator layoutX="14.0" layoutY="181.0" prefHeight="14.0" prefWidth="841.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" />
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="inventory_form" prefHeight="600.0" prefWidth="870.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="inventory_form" prefHeight="600.0" prefWidth="870.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <AnchorPane layoutX="12.0" layoutY="11.0" prefHeight="288.0" prefWidth="841.0" stylesheets="@mainform.css" AnchorPane.bottomAnchor="300.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
                                  <styleClass>
@@ -276,10 +278,10 @@
                                        </children>
                                     </AnchorPane>
                                     <Button fx:id="inventory_importBtn" layoutX="705.0" layoutY="186.0" mnemonicParsing="false" onAction="#inventoryImportBtn" prefHeight="27.0" prefWidth="110.0" styleClass="btn" stylesheets="@mainform.css" text="Import" AnchorPane.rightAnchor="24.0" />
-                                    <Button fx:id="inventory_addBtn" layoutX="71.0" layoutY="184.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="115.0" styleClass="btn" stylesheets="@mainform.css" text="Add" AnchorPane.bottomAnchor="31.0" />
-                                    <Button fx:id="inventory_updateBtn" layoutX="208.0" layoutY="184.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="115.0" styleClass="btn" stylesheets="@mainform.css" text="Update" AnchorPane.bottomAnchor="31.0" />
-                                    <Button fx:id="inventory_clearBtn" layoutX="351.0" layoutY="184.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="115.0" styleClass="btn" stylesheets="@mainform.css" text="Clear" AnchorPane.bottomAnchor="31.0" />
-                                    <Button fx:id="inventory_deleteBtn" layoutX="497.0" layoutY="184.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="115.0" styleClass="btn" stylesheets="@mainform.css" text="Delete" AnchorPane.bottomAnchor="31.0" />
+                                    <Button fx:id="inventory_addBtn" layoutX="71.0" layoutY="184.0" mnemonicParsing="false" onAction="#inventoryAddBtn" prefHeight="37.0" prefWidth="115.0" styleClass="btn" stylesheets="@mainform.css" text="Add" AnchorPane.bottomAnchor="31.0" />
+                                    <Button fx:id="inventory_updateBtn" layoutX="208.0" layoutY="200.0" mnemonicParsing="false" onAction="#inventoryUpdateBtn" prefHeight="38.0" prefWidth="115.0" styleClass="btn" stylesheets="@mainform.css" text="Update" />
+                                    <Button fx:id="inventory_clearBtn" layoutX="351.0" layoutY="184.0" mnemonicParsing="false" onAction="#inventoryClearBtn" prefHeight="38.0" prefWidth="115.0" styleClass="btn" stylesheets="@mainform.css" text="Clear" AnchorPane.bottomAnchor="31.0" />
+                                    <Button fx:id="inventory_deleteBtn" layoutX="497.0" layoutY="184.0" mnemonicParsing="false" onAction="#inventoryDeleteBtn" prefHeight="38.0" prefWidth="115.0" styleClass="btn" stylesheets="@mainform.css" text="Delete" AnchorPane.bottomAnchor="31.0" />
                                     <Label layoutX="372.0" layoutY="119.0" text="Status : ">
                                        <font>
                                           <Font size="14.0" />
@@ -289,6 +291,62 @@
                                  </children>
                               </AnchorPane>
                               <Separator layoutX="15.0" layoutY="290.0" prefHeight="10.0" prefWidth="842.0" AnchorPane.bottomAnchor="283.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="12.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane layoutX="91.0" layoutY="83.0" prefHeight="600.0" prefWidth="870.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <AnchorPane layoutX="14.0" layoutY="14.0" prefHeight="577.0" prefWidth="512.0" stylesheets="@mainform.css">
+                                 <styleClass>
+                                    <String fx:value="radius" />
+                                    <String fx:value="white-bg" />
+                                    <String fx:value="shadow" />
+                                 </styleClass>
+                                 <children>
+                                    <ScrollPane layoutX="14.0" layoutY="12.0" prefHeight="551.0" prefWidth="484.0">
+                                       <content>
+                                          <GridPane prefHeight="13.0" prefWidth="77.0">
+                                            <rowConstraints>
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                            </rowConstraints>
+                                          </GridPane>
+                                       </content>
+                                    </ScrollPane>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane layoutX="541.0" layoutY="14.0" prefHeight="577.0" prefWidth="315.0" stylesheets="@mainform.css">
+                                 <styleClass>
+                                    <String fx:value="radius" />
+                                    <String fx:value="white-bg" />
+                                    <String fx:value="shadow" />
+                                 </styleClass>
+                                 <children>
+                                    <TableView layoutX="14.0" layoutY="14.0" prefHeight="264.0" prefWidth="289.0">
+                                      <columns>
+                                        <TableColumn prefWidth="101.0" text="Product Name" />
+                                        <TableColumn prefWidth="94.0" text="Quantity" />
+                                          <TableColumn prefWidth="100.0" text="Price ($)" />
+                                      </columns>
+                                    </TableView>
+                                    <Label layoutX="144.0" layoutY="296.0" text="Total :">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="192.0" layoutY="296.0" text="\$0.0">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="124.0" layoutY="324.0" text="Amount :" AnchorPane.leftAnchor="119.0">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField layoutX="192.0" layoutY="322.0" prefHeight="25.0" prefWidth="103.0" />
+                                 </children>
+                              </AnchorPane>
                            </children>
                         </AnchorPane>
                      </children></AnchorPane>

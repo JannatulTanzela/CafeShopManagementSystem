@@ -28,7 +28,7 @@
                   <Hyperlink fx:id="forgotpass" layoutX="53.0" layoutY="200.0" text="Forgot Passsword?" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="signupform" prefHeight="400.0" prefWidth="300.0" styleClass="white" stylesheets="@logindesign.css" visible="false">
+            <AnchorPane fx:id="signupform" prefHeight="400.0" prefWidth="300.0" styleClass="white" stylesheets="@logindesign.css">
                <children>
                   <Label layoutX="53.0" layoutY="56.0" styleClass="head_level" stylesheets="@logindesign.css" text="Register Account" textFill="#3350a8">
                      <font>
