@@ -62,13 +62,13 @@ public class MainFormController implements Initializable {
     @FXML
     private GridPane menu_gridPane;
     @FXML
-    private TableView<?> menu_tableView;
+    private TableView<productData> menu_tableView;
     @FXML
-    private TableColumn<?, ?> menu_col_productName;
+    private TableColumn<productData, String> menu_col_productName;
     @FXML
-    private TableColumn<?, ?> menu_col_quantity;
+    private TableColumn<productData, String> menu_col_quantity;
     @FXML
-    private TableColumn<?, ?> menu_col_price;
+    private TableColumn<productData, String> menu_col_price;
     @FXML
     private Label menu_total;
     @FXML
@@ -90,6 +90,7 @@ public class MainFormController implements Initializable {
 
     @FXML
     public void inventoryAddBtn() {
+        // Validate input fields
         if (inventory_productID.getText().isEmpty()
                 || inventory_productName.getText().isEmpty()
                 || inventory_type.getSelectionModel().getSelectedItem() == null
@@ -103,24 +104,29 @@ public class MainFormController implements Initializable {
             alert.setHeaderText(null);
             alert.setContentText("Please fill all blank fields");
             alert.showAndWait();
+            return;
+        }
 
-            //return;
-        } else {
-            String checkProdID = "SELECT prod_id FROM product WHERE prod_id = '"
-                    + inventory_productID.getText() + "'";
-
-            connect = database.connectDB();
+        connect = database.connectDB();
+        if (connect == null) {
+            alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Message");
+            alert.setHeaderText(null);
+            alert.setContentText("Database connection failed");
+            alert.showAndWait();
+            return;
         }
 
         try {
-            //int stock = Integer.parseInt(inventory_stock.getText());
-            //double price = Double.parseDouble(inventory_price.getText());
-            Statement statement = connect.createStatement();
-            String checkProdID = null;
-            result = statement.executeQuery(checkProdID);
-            //prepare = connect.prepareStatement(checkProdID);
-            //prepare.setString(1, inventory_productID.getText());
-            //result = prepare.executeQuery();
+            // Parse numeric inputs
+            int stock = Integer.parseInt(inventory_stock.getText());
+            double price = Double.parseDouble(inventory_price.getText());
+
+            // Check for duplicate product ID using parameterized query
+            String checkProdID = "SELECT prod_id FROM product WHERE prod_id = ?";
+            prepare = connect.prepareStatement(checkProdID);
+            prepare.setString(1, inventory_productID.getText());
+            result = prepare.executeQuery();
 
             if (result.next()) {
                 alert = new Alert(Alert.AlertType.ERROR);
@@ -129,10 +135,8 @@ public class MainFormController implements Initializable {
                 alert.setContentText(inventory_productID.getText() + " is already taken");
                 alert.showAndWait();
             } else {
-                String insertData = "INSERT INTO product "
-                        + "(prod_id, prod_name, type, stock, price, status, image, date) "
-                        + "VALUES(?,?,?,?,?,?,?,?)";
-
+                // Insert new product
+                String insertData = "INSERT INTO product (prod_id, prod_name, type, stock, price, status, image, date) VALUES(?,?,?,?,?,?,?,?)";
                 prepare = connect.prepareStatement(insertData);
                 prepare.setString(1, inventory_productID.getText());
                 prepare.setString(2, inventory_productName.getText());
@@ -140,13 +144,8 @@ public class MainFormController implements Initializable {
                 prepare.setString(4, inventory_stock.getText());
                 prepare.setString(5, inventory_price.getText());
                 prepare.setString(6, inventory_status.getSelectionModel().getSelectedItem());
-
-                String path = data.path.replace("\\", "\\\\");
-                prepare.setString(7, path);
-
-                Date sqlDate = new Date(new java.util.Date().getTime());
-                prepare.setDate(8, sqlDate);
-
+                prepare.setString(7, data.path.replace("\\", "\\\\"));
+                prepare.setDate(8, new java.sql.Date(new java.util.Date().getTime()));
                 prepare.executeUpdate();
 
                 alert = new Alert(Alert.AlertType.INFORMATION);
@@ -155,12 +154,38 @@ public class MainFormController implements Initializable {
                 alert.setContentText("Successfully Added!");
                 alert.showAndWait();
 
+                // Refresh table and clear fields
                 inventoryShowData();
                 inventoryClearBtn();
             }
-
+        } catch (NumberFormatException e) {
+            alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Message");
+            alert.setHeaderText(null);
+            alert.setContentText("Stock and price must be valid numbers");
+            alert.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();
+            alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Message");
+            alert.setHeaderText(null);
+            alert.setContentText("An error occurred while adding the product");
+            alert.showAndWait();
+        } finally {
+            // Close database resources
+            try {
+                if (result != null) {
+                    result.close();
+                }
+                if (prepare != null) {
+                    prepare.close();
+                }
+                if (connect != null) {
+                    connect.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -296,7 +321,7 @@ public class MainFormController implements Initializable {
     @FXML
     public void inventoryImportBtn() {
         FileChooser openFile = new FileChooser();
-        openFile.getExtensionFilters().add(new FileChooser.ExtensionFilter("Open Image File", "*.png", "*.jpg"));
+        openFile.getExtensionFilters().add(new FileChooser.ExtensionFilter("Open Image File", "*.png", "*.jpg", "*.jpeg", "*.avif", "*.PNG"));
         File file = openFile.showOpenDialog(main_form.getScene().getWindow());
 
         if (file != null) {
@@ -330,6 +355,8 @@ public class MainFormController implements Initializable {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("habijabi error");
+
         }
         return listData;
     }
@@ -435,7 +462,7 @@ public class MainFormController implements Initializable {
                 FXMLLoader load = new FXMLLoader();
                 load.setLocation(getClass().getResource("cardProduct.fxml"));
                 AnchorPane pane = load.load();
-                cardProductController cardC = load.getController();
+                CardProductController cardC = load.getController();
                 cardC.setData(cardListData.get(q));
 
                 if (column == 3) {
@@ -445,29 +472,75 @@ public class MainFormController implements Initializable {
 
                 menu_gridPane.add(pane, column++, row);
 
-                GridPane.setMargin(pane, new Insets(10));
+                GridPane.setMargin(pane, new javafx.geometry.Insets(10));
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
-    
-     private int cID;
-    
+
+    public ObservableList<productData> menuDisplayOrder() {
+
+        ObservableList<productData> listData = FXCollections.observableArrayList();
+
+        String sql = "SELECT * FROM customer  ";
+
+        connect = database.connectDB();
+
+        try {
+
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            productData prod;
+
+            while (result.next()) {
+                prod = new productData(result.getInt("id"),
+                        result.getString("prod_id"),
+                        result.getString("prod_name"),
+                        result.getString("type"),
+                        result.getInt("quantity"),
+                        result.getDouble("price"),
+                        result.getString("image"),
+                        result.getDate("date"));
+                listData.add(prod);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return listData;
+    }
+
+    private ObservableList<productData> menuOrderListData;
+
+    public void menuShowOrderData() {
+        //menuOrderListData = menuGetOrder();
+
+        menu_col_productName.setCellValueFactory(new PropertyValueFactory<>("productName"));
+        menu_col_quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        menu_col_price.setCellValueFactory(new PropertyValueFactory<>("price"));
+
+        menu_tableView.setItems(menuOrderListData);
+    }
+
+    private int cID;
+
     public void customerID() {
-        
+
         String sql = "SELECT MAX(customer_id) FROM customer";
         connect = database.connectDB();
-        
+
         try {
             prepare = connect.prepareStatement(sql);
             result = prepare.executeQuery();
-            
+
             if (result.next()) {
                 cID = result.getInt("MAX(customer_id)");
             }
-            
+
             String checkCID = "SELECT MAX(customer_id) FROM receipt";
             prepare = connect.prepareStatement(checkCID);
             result = prepare.executeQuery();
@@ -475,21 +548,19 @@ public class MainFormController implements Initializable {
             if (result.next()) {
                 checkID = result.getInt("MAX(customer_id)");
             }
-            
+
             if (cID == 0) {
                 cID += 1;
             } else if (cID == checkID) {
                 cID += 1;
             }
-            
+
             data.cID = cID;
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
-    
 
     public void switchForm(ActionEvent event) {
 
@@ -513,6 +584,7 @@ public class MainFormController implements Initializable {
             menu_form.setVisible(true);
 
             menuDisplayCard();
+            menuDisplayOrder();
 
         }
     }
@@ -551,6 +623,9 @@ public class MainFormController implements Initializable {
         inventoryTypeList();
         inventoryStatusList();
         inventoryShowData();
+        menuDisplayCard();
+        menuDisplayOrder();
+
     }
 
 }
