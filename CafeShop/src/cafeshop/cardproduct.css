@@ -2,6 +2,18 @@
  * Empty Stylesheet file.
  */
 
-.mainFxmlClass {
-
+.card{
+    -fx-background-color: #fff;
+    -fx-background-radius: 5px;
+}
+.shadow{
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 5,0,0,0);
+}
+.btn{
+    -fx-background-color: linear-gradient(to bottom right, #095894 ,#2d6d9a);
+    -fx-cursor: hand;
+    -fx-text-fill: #fff;
+}
+.btn:hover{
+    -fx-background-color: linear-gradient(to bottom right,#42c1fc , #2e9be4);
 }

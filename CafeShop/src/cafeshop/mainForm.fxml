@@ -51,9 +51,9 @@
                                     <Font size="15.0" />
                                  </font>
                               </Label>
-                              <Button fx:id="dashboard_btn" layoutX="12.0" layoutY="162.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="210.0" styleClass="nav-btn" stylesheets="@mainform.css" text="Dashboard" />
-                              <Button fx:id="inventory_btn" layoutX="12.0" layoutY="217.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="210.0" styleClass="nav-btn" stylesheets="@mainform.css" text="INVENTORY" />
-                              <Button fx:id="menu_btn" layoutX="12.0" layoutY="273.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="210.0" styleClass="nav-btn" stylesheets="@mainform.css" text="MENU" />
+                              <Button fx:id="dashboard_btn" layoutX="12.0" layoutY="162.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="210.0" styleClass="nav-btn" stylesheets="@mainform.css" text="Dashboard" />
+                              <Button fx:id="inventory_btn" layoutX="12.0" layoutY="217.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="210.0" styleClass="nav-btn" stylesheets="@mainform.css" text="INVENTORY" />
+                              <Button fx:id="menu_btn" layoutX="12.0" layoutY="273.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="210.0" styleClass="nav-btn" stylesheets="@mainform.css" text="MENU" />
                               <Button fx:id="customers_btn" layoutX="12.0" layoutY="324.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="210.0" styleClass="nav-btn" stylesheets="@mainform.css" text="CUSTOMERS" />
                               <Button fx:id="logout_btn" layoutX="13.0" layoutY="560.0" mnemonicParsing="false" onAction="#logout" prefHeight="25.0" prefWidth="27.0" stylesheets="@mainform.css" textFill="#0a2797" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="14.0">
                                  <styleClass>
@@ -81,7 +81,7 @@
                <center>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                      <children>
-                        <AnchorPane prefHeight="600.0" prefWidth="870.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="dashboard_form" prefHeight="600.0" prefWidth="870.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <AnchorPane layoutX="14.0" layoutY="14.0" prefHeight="153.0" prefWidth="847.0" stylesheets="@mainform.css" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="14.0">
                                  <styleClass>
