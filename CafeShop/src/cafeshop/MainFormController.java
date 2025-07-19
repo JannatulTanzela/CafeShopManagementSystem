@@ -30,6 +30,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import java.sql.Date;
+import java.time.LocalDate;
 
 public class MainFormController implements Initializable {
 
@@ -480,11 +482,12 @@ public class MainFormController implements Initializable {
         }
     }
 
-    public ObservableList<productData> menuDisplayOrder() {
+    public ObservableList<productData> menuGetOrder() {
+         customerID();
 
         ObservableList<productData> listData = FXCollections.observableArrayList();
 
-        String sql = "SELECT * FROM customer  ";
+        String sql = "SELECT * FROM customer WHERE customer_id = " + cID ;
 
         connect = database.connectDB();
 
@@ -517,13 +520,145 @@ public class MainFormController implements Initializable {
     private ObservableList<productData> menuOrderListData;
 
     public void menuShowOrderData() {
-        //menuOrderListData = menuGetOrder();
+        menuOrderListData = menuGetOrder();
 
         menu_col_productName.setCellValueFactory(new PropertyValueFactory<>("productName"));
         menu_col_quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         menu_col_price.setCellValueFactory(new PropertyValueFactory<>("price"));
 
         menu_tableView.setItems(menuOrderListData);
+    }
+
+    private double totalP;
+
+    public void menuGetTotal() {
+        customerID();
+        String total = "SELECT COUNT(price) FROM customer WHERE customer_id = " + cID;
+
+        connect = database.connectDB();
+
+        try {
+
+            prepare = connect.prepareStatement(total);
+            result = prepare.executeQuery();
+
+            if (result.next()) {
+                totalP = result.getDouble("COUNT(price)");
+            }
+
+            menu_total.setText("$" + totalP);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void menuDisplayTotal() {
+        menuGetTotal();
+        menu_total.setText("$" + totalP);
+    }
+
+    private double amount;
+    private double change;
+
+    public void menuAmount() {
+        menuGetTotal();
+        if (menu_amount.getText().isEmpty() || totalP == 0) {
+            alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error Message");
+            alert.setHeaderText(null);
+            alert.setContentText("Invalid :3");
+            alert.showAndWait();
+        } else {
+            amount = Double.parseDouble(menu_amount.getText());
+            if (amount < totalP) {
+                menu_amount.setText("");
+            } else {
+                change = (amount - totalP);
+                menu_change.setText("$" + change);
+            }
+        }
+    }
+
+    public void menuPayBtn() {
+
+        if (totalP == 0) {
+            alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error Message");
+            alert.setHeaderText(null);
+            alert.setContentText("Please choose your order first!");
+            alert.showAndWait();
+        } else {
+            menuGetTotal();
+            String insertPay = "INSERT INTO receipt (customer_id, total, date, em_username) "
+                    + "VALUES(?,?,?,?)";
+
+            connect = database.connectDB();
+
+            try {
+
+                if (amount == 0) {
+                    alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error Messaged");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Something wrong :3");
+                    alert.showAndWait();
+                } else {
+                    alert = new Alert(AlertType.CONFIRMATION);
+                    alert.setTitle("Confirmation Message");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Are you sure?");
+                    Optional<ButtonType> option = alert.showAndWait();
+
+                    if (option.get().equals(ButtonType.OK)) {
+                        customerID();
+                        menuGetTotal();
+                        prepare = connect.prepareStatement(insertPay);
+                        prepare.setString(1, String.valueOf(cID));
+                        prepare.setString(2, String.valueOf(totalP));
+
+                        java.util.Date date = new java.util.Date();
+                        java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+                        prepare.setString(3, String.valueOf(sqlDate));
+                        prepare.setString(4, data.username);
+
+                        prepare.executeUpdate();
+
+                        alert = new Alert(AlertType.INFORMATION);
+                        alert.setTitle("Infomation Message");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Successful.");
+                        alert.showAndWait();
+
+                        menuShowOrderData();
+
+                    } else {
+                        alert = new Alert(AlertType.WARNING);
+                        alert.setTitle("Infomation Message");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Cancelled.");
+                        alert.showAndWait();
+                    }
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    private ObservableList<productData> menuListData;
+
+    public void menuShowData() {
+        menuOrderListData = menuGetOrder();
+
+        menu_col_productName.setCellValueFactory(new PropertyValueFactory<>("productName"));
+        menu_col_quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        menu_col_price.setCellValueFactory(new PropertyValueFactory<>("price"));
+
+        menu_tableView.setItems(cardListData);
     }
 
     private int cID;
@@ -584,7 +719,9 @@ public class MainFormController implements Initializable {
             menu_form.setVisible(true);
 
             menuDisplayCard();
-            menuDisplayOrder();
+            //menuDisplayOrder();
+            menuDisplayTotal();
+            menuShowOrderData();
 
         }
     }
@@ -620,11 +757,15 @@ public class MainFormController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         displayUsername();
+
         inventoryTypeList();
         inventoryStatusList();
         inventoryShowData();
+
         menuDisplayCard();
-        menuDisplayOrder();
+        menuGetOrder();
+        menuDisplayTotal();
+        menuShowOrderData();
 
     }
 
