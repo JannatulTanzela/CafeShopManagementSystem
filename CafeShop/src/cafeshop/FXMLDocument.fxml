@@ -25,7 +25,7 @@
                   <TextField fx:id="username" layoutX="53.0" layoutY="101.0" onAction="#loginBtn" prefHeight="30.0" prefWidth="220.0" promptText="Username" />
                   <PasswordField fx:id="password" layoutX="53.0" layoutY="142.0" onAction="#loginBtn" prefHeight="30.0" prefWidth="220.0" promptText="Password" />
                   <Button fx:id="loginBtn" layoutX="50.0" layoutY="237.0" mnemonicParsing="false" onAction="#loginBtn" prefHeight="40.0" prefWidth="220.0" styleClass="login_btn" stylesheets="@logindesign.css" text="Login" textFill="#1348ab" />
-                  <Hyperlink fx:id="forgotpass" layoutX="53.0" layoutY="200.0" text="Forgot Passsword?" />
+                  <Hyperlink fx:id="forgotpass" layoutX="53.0" layoutY="200.0" text="Forgot Passsword?" visible="false" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="signupform" prefHeight="400.0" prefWidth="300.0" styleClass="white" stylesheets="@logindesign.css">

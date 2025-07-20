@@ -83,6 +83,7 @@ public class FXMLDocumentController implements Initializable {
     private Alert alert;
 
     //@FXML
+    @FXML
     public void loginBtn() {
 
         if (username.getText().isEmpty() || password.getText().isEmpty()) {

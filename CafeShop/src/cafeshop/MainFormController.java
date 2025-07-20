@@ -106,7 +106,7 @@ public class MainFormController implements Initializable {
             alert.setHeaderText(null);
             alert.setContentText("Please fill all blank fields");
             alert.showAndWait();
-           
+
         }
 
         connect = database.connectDB();
@@ -117,19 +117,19 @@ public class MainFormController implements Initializable {
             alert.setContentText("Database connection failed");
             alert.showAndWait();
             return;
-        }else {
+        } else {
 
             // CHECK PRODUCT ID
             String checkProdID = "SELECT prod_id FROM product WHERE prod_id = '"
                     + inventory_productID.getText() + "'";
-            
+
             connect = database.connectDB();
-            
+
             try {
-                
+
                 Statement statement = connect.createStatement();
                 result = statement.executeQuery(checkProdID);
-                
+
                 if (result.next()) {
                     alert = new Alert(AlertType.ERROR);
                     alert.setTitle("Error Message");
@@ -137,47 +137,47 @@ public class MainFormController implements Initializable {
                     alert.setContentText(inventory_productID.getText() + " is already taken");
                     alert.showAndWait();
                 } else {
-                // Insert new product
-                String insertData = "INSERT INTO product "
-                        + "(prod_id, prod_name, type, stock, price, status, image, date) "
-                        + "VALUES(?,?,?,?,?,?,?,?)";
-                prepare = connect.prepareStatement(insertData);
+                    // Insert new product
+                    String insertData = "INSERT INTO product "
+                            + "(prod_id, prod_name, type, stock, price, status, image, date) "
+                            + "VALUES(?,?,?,?,?,?,?,?)";
+                    prepare = connect.prepareStatement(insertData);
                     prepare.setString(1, inventory_productID.getText());
                     prepare.setString(2, inventory_productName.getText());
                     prepare.setString(3, (String) inventory_type.getSelectionModel().getSelectedItem());
                     prepare.setString(4, inventory_stock.getText());
                     prepare.setString(5, inventory_price.getText());
                     prepare.setString(6, (String) inventory_status.getSelectionModel().getSelectedItem());
-                    
+
                     String path = data.path;
                     path = path.replace("\\", "\\\\");
-                    
+
                     prepare.setString(7, path);
 
                     // TO GET CURRENT DATE
                     java.util.Date date = new java.util.Date();
                     java.sql.Date sqlDate = new java.sql.Date(date.getTime());
-                    
+
                     prepare.setString(8, String.valueOf(sqlDate));
-                    
+
                     prepare.executeUpdate();
-                    
+
                     alert = new Alert(AlertType.INFORMATION);
                     alert.setTitle("Error Message");
                     alert.setHeaderText(null);
                     alert.setContentText("Successfully Added!");
                     alert.showAndWait();
-                    
+
                     inventoryShowData();
                     inventoryClearBtn();
                 }
-                
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
-    
+
     @FXML
     public void inventoryUpdateBtn() {
 
@@ -516,6 +516,21 @@ public class MainFormController implements Initializable {
         menu_tableView.setItems(menuOrderListData);
     }
 
+    private int getid;
+
+    @FXML
+    public void menuSelectOrder() {
+        productData prod = menu_tableView.getSelectionModel().getSelectedItem();
+        int num = menu_tableView.getSelectionModel().getSelectedIndex();
+
+        if ((num - 1) < -1) {
+            return;
+        }
+        // TO GET THE ID PER ORDER
+        getid = prod.getId();
+
+    }
+
     private double totalP;
 
     public void menuGetTotal() {
@@ -636,16 +651,46 @@ public class MainFormController implements Initializable {
 
     }
 
+    public void menuRemoveBtn() {
+
+        if (getid == 0) {
+            alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error Message");
+            alert.setHeaderText(null);
+            alert.setContentText("Please select the order you want to remove");
+            alert.showAndWait();
+        } else {
+            String deleteData = "DELETE FROM customer WHERE id = " + getid;
+            connect = database.connectDB();
+            try {
+                alert = new Alert(AlertType.CONFIRMATION);
+                alert.setTitle("Confirmation Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Are you sure you want to delete this order?");
+                Optional<ButtonType> option = alert.showAndWait();
+
+                if (option.get().equals(ButtonType.OK)) {
+                    prepare = connect.prepareStatement(deleteData);
+                    prepare.executeUpdate();
+                }
+
+                menuShowOrderData();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
     private ObservableList<productData> menuListData;
 
-    public void menuShowData() {
-        menuOrderListData = menuGetOrder();
-
-        menu_col_productName.setCellValueFactory(new PropertyValueFactory<>("productName"));
-        menu_col_quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        menu_col_price.setCellValueFactory(new PropertyValueFactory<>("price"));
-
-        menu_tableView.setItems(cardListData);
+    public void menuRestart() {
+        totalP = 0;
+        change = 0;
+        amount = 0;
+        menu_total.setText("$0.0");
+        menu_amount.setText("");
+        menu_change.setText("$0.0");
     }
 
     private int cID;
@@ -684,6 +729,7 @@ public class MainFormController implements Initializable {
         }
     }
 
+    @FXML
     public void switchForm(ActionEvent event) {
 
         if (event.getSource() == dashboard_btn) {
