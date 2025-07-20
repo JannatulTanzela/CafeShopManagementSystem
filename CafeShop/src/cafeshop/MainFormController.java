@@ -106,7 +106,7 @@ public class MainFormController implements Initializable {
             alert.setHeaderText(null);
             alert.setContentText("Please fill all blank fields");
             alert.showAndWait();
-            return;
+           
         }
 
         connect = database.connectDB();
@@ -117,80 +117,67 @@ public class MainFormController implements Initializable {
             alert.setContentText("Database connection failed");
             alert.showAndWait();
             return;
-        }
+        }else {
 
-        try {
-            // Parse numeric inputs
-            int stock = Integer.parseInt(inventory_stock.getText());
-            double price = Double.parseDouble(inventory_price.getText());
-
-            // Check for duplicate product ID using parameterized query
-            String checkProdID = "SELECT prod_id FROM product WHERE prod_id = ?";
-            prepare = connect.prepareStatement(checkProdID);
-            prepare.setString(1, inventory_productID.getText());
-            result = prepare.executeQuery();
-
-            if (result.next()) {
-                alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error Message");
-                alert.setHeaderText(null);
-                alert.setContentText(inventory_productID.getText() + " is already taken");
-                alert.showAndWait();
-            } else {
-                // Insert new product
-                String insertData = "INSERT INTO product (prod_id, prod_name, type, stock, price, status, image, date) VALUES(?,?,?,?,?,?,?,?)";
-                prepare = connect.prepareStatement(insertData);
-                prepare.setString(1, inventory_productID.getText());
-                prepare.setString(2, inventory_productName.getText());
-                prepare.setString(3, inventory_type.getSelectionModel().getSelectedItem());
-                prepare.setString(4, inventory_stock.getText());
-                prepare.setString(5, inventory_price.getText());
-                prepare.setString(6, inventory_status.getSelectionModel().getSelectedItem());
-                prepare.setString(7, data.path.replace("\\", "\\\\"));
-                prepare.setDate(8, new java.sql.Date(new java.util.Date().getTime()));
-                prepare.executeUpdate();
-
-                alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Success Message");
-                alert.setHeaderText(null);
-                alert.setContentText("Successfully Added!");
-                alert.showAndWait();
-
-                // Refresh table and clear fields
-                inventoryShowData();
-                inventoryClearBtn();
-            }
-        } catch (NumberFormatException e) {
-            alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error Message");
-            alert.setHeaderText(null);
-            alert.setContentText("Stock and price must be valid numbers");
-            alert.showAndWait();
-        } catch (Exception e) {
-            e.printStackTrace();
-            alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error Message");
-            alert.setHeaderText(null);
-            alert.setContentText("An error occurred while adding the product");
-            alert.showAndWait();
-        } finally {
-            // Close database resources
+            // CHECK PRODUCT ID
+            String checkProdID = "SELECT prod_id FROM product WHERE prod_id = '"
+                    + inventory_productID.getText() + "'";
+            
+            connect = database.connectDB();
+            
             try {
-                if (result != null) {
-                    result.close();
+                
+                Statement statement = connect.createStatement();
+                result = statement.executeQuery(checkProdID);
+                
+                if (result.next()) {
+                    alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error Message");
+                    alert.setHeaderText(null);
+                    alert.setContentText(inventory_productID.getText() + " is already taken");
+                    alert.showAndWait();
+                } else {
+                // Insert new product
+                String insertData = "INSERT INTO product "
+                        + "(prod_id, prod_name, type, stock, price, status, image, date) "
+                        + "VALUES(?,?,?,?,?,?,?,?)";
+                prepare = connect.prepareStatement(insertData);
+                    prepare.setString(1, inventory_productID.getText());
+                    prepare.setString(2, inventory_productName.getText());
+                    prepare.setString(3, (String) inventory_type.getSelectionModel().getSelectedItem());
+                    prepare.setString(4, inventory_stock.getText());
+                    prepare.setString(5, inventory_price.getText());
+                    prepare.setString(6, (String) inventory_status.getSelectionModel().getSelectedItem());
+                    
+                    String path = data.path;
+                    path = path.replace("\\", "\\\\");
+                    
+                    prepare.setString(7, path);
+
+                    // TO GET CURRENT DATE
+                    java.util.Date date = new java.util.Date();
+                    java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+                    
+                    prepare.setString(8, String.valueOf(sqlDate));
+                    
+                    prepare.executeUpdate();
+                    
+                    alert = new Alert(AlertType.INFORMATION);
+                    alert.setTitle("Error Message");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Successfully Added!");
+                    alert.showAndWait();
+                    
+                    inventoryShowData();
+                    inventoryClearBtn();
                 }
-                if (prepare != null) {
-                    prepare.close();
-                }
-                if (connect != null) {
-                    connect.close();
-                }
+                
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
-
+    
     @FXML
     public void inventoryUpdateBtn() {
 
@@ -483,11 +470,11 @@ public class MainFormController implements Initializable {
     }
 
     public ObservableList<productData> menuGetOrder() {
-         customerID();
+        customerID();
 
         ObservableList<productData> listData = FXCollections.observableArrayList();
 
-        String sql = "SELECT * FROM customer WHERE customer_id = " + cID ;
+        String sql = "SELECT * FROM customer WHERE customer_id = " + cID;
 
         connect = database.connectDB();
 

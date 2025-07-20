@@ -20,11 +20,12 @@ public class productData {
     private Double price;
     private String status;
     private String image;
-    private Date date;
+    private java.sql.Date date;
     private Integer quantity;
 
-    public productData(Integer id, String productId, String productName, String type,
-            Integer stock, Double price, String status, String image, Date date) {
+    public productData(Integer id, String productId,
+             String productName, String type, Integer stock,
+             Double price, String status, String image, java.sql.Date date) {
         this.id = id;
         this.productId = productId;
         this.productName = productName;
@@ -56,11 +57,11 @@ public class productData {
         return productId;
     }
 
-    public String getproductName() {
+    public String getProductName() {
         return productName;
     }
-
-    public String getType() {
+    
+    public String getType(){
         return type;
     }
 
@@ -76,16 +77,15 @@ public class productData {
         return status;
     }
 
-    public Date getDate() {
+    public String getImage() {
+        return image;
+    }
+
+    public java.sql.Date getDate() {
         return date;
     }
-
-    String getImage() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    
+    public Integer getQuantity(){
+        return quantity;
     }
-
-    String getProductName() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
 }
