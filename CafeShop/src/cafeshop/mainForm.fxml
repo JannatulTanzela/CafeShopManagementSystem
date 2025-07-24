@@ -344,7 +344,7 @@
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="menu_amount" layoutX="182.0" layoutY="311.0" prefHeight="25.0" prefWidth="103.0" promptText="\$0.0" AnchorPane.bottomAnchor="230.0" AnchorPane.rightAnchor="30.0" />
+                                    <TextField fx:id="menu_amount" layoutX="182.0" layoutY="311.0" onAction="#menuAmount" prefHeight="25.0" prefWidth="103.0" promptText="\$0.0" AnchorPane.bottomAnchor="230.0" AnchorPane.rightAnchor="30.0" />
                                     <Label layoutX="114.0" layoutY="343.0" prefHeight="21.0" prefWidth="73.0" text="Change :" AnchorPane.bottomAnchor="202.0" AnchorPane.rightAnchor="128.0">
                                        <font>
                                           <Font size="15.0" />
@@ -355,7 +355,7 @@
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <Button fx:id="menu_payBtn" layoutX="12.0" layoutY="398.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="294.0" styleClass="btn" stylesheets="@mainform.css" text="Pay" AnchorPane.bottomAnchor="105.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" />
+                                    <Button fx:id="menu_payBtn" layoutX="12.0" layoutY="398.0" mnemonicParsing="false" onAction="#menuPayBtn" prefHeight="33.0" prefWidth="294.0" styleClass="btn" stylesheets="@mainform.css" text="Pay" AnchorPane.bottomAnchor="105.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" />
                                     <Button fx:id="menu_removeBtn" layoutX="31.0" layoutY="447.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="107.0" styleClass="btn" stylesheets="@mainform.css" text="Remove" AnchorPane.bottomAnchor="36.0" AnchorPane.leftAnchor="28.0" />
                                     <Button fx:id="menu_receiptBtn" layoutX="180.0" layoutY="447.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="107.0" styleClass="btn" stylesheets="@mainform.css" text="Receipt" AnchorPane.bottomAnchor="36.0" AnchorPane.rightAnchor="28.0" />
                                  </children>

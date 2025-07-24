@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 21, 2025 at 05:21 PM
+-- Generation Time: Jul 22, 2025 at 09:47 AM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -37,8 +37,22 @@ CREATE TABLE `customer` (
   `price` double NOT NULL,
   `date` date NOT NULL,
   `image` varchar(500) NOT NULL,
-  `em_username` varchar(100) NOT NULL
+  `em_username` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `customer`
+--
+
+INSERT INTO `customer` (`id`, `customer_id`, `prod_id`, `prod_name`, `type`, `quantity`, `price`, `date`, `image`, `em_username`) VALUES
+(1, 1, '1', 's', 'Meals', 1, 0, '2025-07-22', 'D:\\\\\\\\a5.PNG', NULL),
+(2, 1, '8', 'jj', 'Meals', 2, 0, '2025-07-22', 'D:\\\\\\\\p1.JPG', NULL),
+(3, 1, '3', 'rtg', 'Meals', 1, 0, '2025-07-22', 'D:\\\\\\\\aa1.PNG', NULL),
+(4, 1, '2', 'gg', 'Meals', 2, 0, '2025-07-22', 'C:\\\\\\\\Users\\\\\\\\Youtech BD\\\\\\\\OneDrive\\\\\\\\Pictures\\\\\\\\pale red.jpg', NULL),
+(5, 1, '7', 'rrr', 'Drinks', 2, 0, '2025-07-22', 'D:\\\\\\\\aa2.PNG', NULL),
+(6, 1, '7', 'rrr', 'Drinks', 1, 0, '2025-07-22', 'D:\\\\\\\\\\\\\\\\aa2.PNG', NULL),
+(7, 1, '11', 'www', 'Meals', 1, 0, '2025-07-22', 'C:\\\\\\\\Users\\\\\\\\Youtech BD\\\\\\\\OneDrive\\\\\\\\Pictures\\\\\\\\pale red.jpg', NULL),
+(8, 1, '12', 'aaa', 'Drinks', 2, 0, '2025-07-22', 'C:\\\\\\\\Users\\\\\\\\Youtech BD\\\\\\\\OneDrive\\\\\\\\Pictures\\\\\\\\pale red.jpg', NULL);
 
 -- --------------------------------------------------------
 
@@ -88,12 +102,15 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`id`, `prod_id`, `prod_name`, `type`, `stock`, `price`, `status`, `image`, `date`) VALUES
-(1, '1', 's', 'Meals', 1, 40, 'Available', 'D:\\\\a5.PNG', '2025-07-18'),
+(1, '1', 's', 'Meals', 0, 0, 'Available', 'D:\\\\a5.PNG', '2025-07-18'),
 (2, '23', 'fg', 'Drinks', 33, 44, 'Unavailable', 'D:\\\\aaaa8.PNG', '2025-07-18'),
 (3, '6', 'ttt', 'Drinks', 6, 777, 'Available', 'D:\\\\aaa7.PNG', '2025-07-18'),
-(4, '8', 'jj', 'Meals', 6, 88, 'Available', 'D:\\\\p1.JPG', '2025-07-18'),
-(5, '3', 'rtg', 'Meals', 33, 55, 'Available', 'D:\\\\aa1.PNG', '2025-07-19'),
-(6, '7', 'rrr', 'Drinks', 3, 33, 'Available', 'D:\\\\aa2.PNG', '2025-07-20');
+(4, '8', 'jj', 'Meals', 4, 0, 'Available', 'D:\\\\p1.JPG', '2025-07-18'),
+(5, '3', 'rtg', 'Meals', 32, 0, 'Available', 'D:\\\\aa1.PNG', '2025-07-19'),
+(6, '7', 'rrr', 'Drinks', 0, 0, 'Available', 'D:\\\\\\\\aa2.PNG', '2025-07-20'),
+(7, '2', 'gg', 'Meals', 64, 0, 'Available', 'C:\\\\Users\\\\Youtech BD\\\\OneDrive\\\\Pictures\\\\pale red.jpg', '2025-07-22'),
+(8, '11', 'www', 'Meals', 443, 0, 'Available', 'C:\\\\Users\\\\Youtech BD\\\\OneDrive\\\\Pictures\\\\pale red.jpg', '2025-07-22'),
+(9, '12', 'aaa', 'Drinks', 98, 0, 'Available', 'C:\\\\Users\\\\Youtech BD\\\\OneDrive\\\\Pictures\\\\pale red.jpg', '2025-07-22');
 
 -- --------------------------------------------------------
 
@@ -136,6 +153,12 @@ ALTER TABLE `product`
 --
 
 --
+-- AUTO_INCREMENT for table `customer`
+--
+ALTER TABLE `customer`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
@@ -145,7 +168,7 @@ ALTER TABLE `employee`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

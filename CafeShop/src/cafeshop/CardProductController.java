@@ -42,6 +42,7 @@ public class CardProductController implements Initializable {
     private Button prod_addBtn;
 
     private productData prodData;
+    
     private Image image;
 
     private String prodID;
@@ -70,7 +71,7 @@ public class CardProductController implements Initializable {
         String path = "File:" + prodData.getImage();
         image = new Image(path, 200, 93, false, true);
         prod_imageView.setImage(image);
-        //pr = prodData.getPrice();
+        pr = prodData.getPrice();
 
     }
 
