@@ -12,9 +12,21 @@ public class data {
 
     public static String username1;
     public static String path;
-    public static Integer id;
+    public static Integer id =0;
     public static String date;
     public static Integer cID;
     static String username;
+
+    static class username {
+
+        public username() {
+        }
+    }
+
+    static class username1 {
+
+        public username1() {
+        }
+    }
 
 }

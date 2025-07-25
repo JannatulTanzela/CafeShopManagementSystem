@@ -82,6 +82,9 @@ public class FXMLDocumentController implements Initializable {
 
     private Alert alert;
 
+    //data.username  = usernameField.getText(); // Set during login
+    //String  = data.username; // Ensure consistency
+
     //@FXML
     @FXML
     public void loginBtn() {

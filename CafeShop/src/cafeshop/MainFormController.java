@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -18,6 +19,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.AreaChart;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -76,16 +80,51 @@ public class MainFormController implements Initializable {
     private double amount;
     private double change;
     private int getid;
+    @FXML
+    private AnchorPane customers_form;
+    @FXML
+    private TableView<customersData> customers_tableView;
+    @FXML
+    private TableColumn<customersData, String> customers_col_customerID;
+    @FXML
+    private TableColumn<customersData, String> customers_col_total;
+    @FXML
+    private TableColumn<customersData, String> customers_col_date;
+    @FXML
+    private TableColumn<customersData, String> customers_col_cashier;
+    @FXML
+    private Label dashboard_NC;
+    @FXML
+    private Label dashboard_TI;
+    @FXML
+    private Label dashboard_NSP;
+    @FXML
+    private AreaChart<?, ?> dashboard_IncomeChart;
+    @FXML
+    private BarChart<?, ?> dashboard_CustomerChart;
+    @FXML
+    private Label dashboard_TotalI;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         displayUsername();
+
+        dashboardDisplayNC();
+        dashboardDisplayTI();
+        dashboardTotalI();
+        dashboardNSP();
+        dashboardIncomeChart();
+        dashboardCustomerChart();
+
         inventoryTypeList();
         inventoryStatusList();
         inventoryShowData();
+
         menuDisplayCard();
         menuShowOrderData();
         menuDisplayTotal();
+
+        customersShowData();
 
         // Add TextFormatter to restrict menu_amount to valid numbers
         if (menu_amount != null) {
@@ -100,9 +139,137 @@ public class MainFormController implements Initializable {
         }
 
         // Validate initialization
-        if (menu_total == null || menu_amount == null ) {
-            System.err.println("Initialization errors: " +
-                "menu_total=" + menu_total + ", menu_amount=" + menu_amount);
+        if (menu_total == null || menu_amount == null) {
+            System.err.println("Initialization errors: "
+                    + "menu_total=" + menu_total + ", menu_amount=" + menu_amount);
+        }
+    }
+
+    public void dashboardDisplayNC() {
+
+        String sql = "SELECT COUNT(id) FROM receipt";
+        connect = database.connectDB();
+
+        try {
+            int nc = 0;
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            if (result.next()) {
+                nc = result.getInt("COUNT(id)");
+            }
+            dashboard_NC.setText(String.valueOf(nc));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void dashboardDisplayTI() {
+        Date date = new Date();
+        java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+
+        String sql = "SELECT SUM(total) FROM receipt WHERE date = '"
+                + sqlDate + "'";
+
+        connect = database.connectDB();
+
+        try {
+            double ti = 0;
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            if (result.next()) {
+                ti = result.getDouble("SUM(total)");
+            }
+
+            dashboard_TI.setText("$" + ti);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void dashboardTotalI() {
+        String sql = "SELECT SUM(total) FROM receipt";
+
+        connect = database.connectDB();
+
+        try {
+            float ti = 0;
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            if (result.next()) {
+                ti = result.getFloat("SUM(total)");
+            }
+            dashboard_TotalI.setText("$" + ti);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void dashboardNSP() {
+
+        String sql = "SELECT COUNT(quantity) FROM customer";
+
+        connect = database.connectDB();
+
+        try {
+            int q = 0;
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            if (result.next()) {
+                q = result.getInt("COUNT(quantity)");
+            }
+            dashboard_NSP.setText(String.valueOf(q));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void dashboardIncomeChart() {
+        dashboard_IncomeChart.getData().clear();
+
+        String sql = "SELECT date, SUM(total) FROM receipt GROUP BY date ORDER BY TIMESTAMP(date)";
+        connect = database.connectDB();
+        XYChart.Series chart = new XYChart.Series();
+        try {
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            while (result.next()) {
+                chart.getData().add(new XYChart.Data<>(result.getString(1), result.getFloat(2)));
+            }
+
+            dashboard_IncomeChart.getData().add(chart);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void dashboardCustomerChart() {
+        dashboard_CustomerChart.getData().clear();
+
+        String sql = "SELECT date, COUNT(id) FROM receipt GROUP BY date ORDER BY TIMESTAMP(date)";
+        connect = database.connectDB();
+        XYChart.Series chart = new XYChart.Series();
+        try {
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            while (result.next()) {
+                chart.getData().add(new XYChart.Data<>(result.getString(1), result.getInt(2)));
+            }
+
+            dashboard_CustomerChart.getData().add(chart);
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -211,8 +378,6 @@ public class MainFormController implements Initializable {
                 }
             }
 
-           
-
             alert.setAlertType(AlertType.CONFIRMATION);
             alert.setTitle("Confirmation Message");
             alert.setHeaderText(null);
@@ -224,12 +389,13 @@ public class MainFormController implements Initializable {
                     prepare.setInt(1, cID);
                     prepare.setDouble(2, totalP);
                     prepare.setDate(3, java.sql.Date.valueOf(LocalDate.now()));
-                    prepare.setString(4, data.username.trim());
+                    prepare.setString(4, data.username);
                     prepare.executeUpdate();
 
                     alert.setAlertType(AlertType.INFORMATION);
                     alert.setTitle("Information Message");
                     alert.setHeaderText(null);
+                    //alert.setContentText("Successful.");
                     alert.setContentText("Payment successful. Change: $" + String.format("%.2f", amount - totalP));
                     alert.showAndWait();
 
@@ -357,13 +523,13 @@ public class MainFormController implements Initializable {
     // Existing methods (unchanged for brevity; add fixes as needed)
     @FXML
     public void inventoryAddBtn() {
-        if (inventory_productID.getText().isEmpty() ||
-            inventory_productName.getText().isEmpty() ||
-            inventory_type.getSelectionModel().isEmpty() ||
-            inventory_stock.getText().isEmpty() ||
-            inventory_price.getText().isEmpty() ||
-            inventory_status.getSelectionModel().isEmpty() ||
-            data.path == null || data.path.trim().isEmpty()) {
+        if (inventory_productID.getText().isEmpty()
+                || inventory_productName.getText().isEmpty()
+                || inventory_type.getSelectionModel().isEmpty()
+                || inventory_stock.getText().isEmpty()
+                || inventory_price.getText().isEmpty()
+                || inventory_status.getSelectionModel().isEmpty()
+                || data.path == null || data.path.trim().isEmpty()) {
 
             alert = new Alert(AlertType.ERROR);
             alert.setTitle("Error Message");
@@ -432,14 +598,14 @@ public class MainFormController implements Initializable {
 
     @FXML
     public void inventoryUpdateBtn() {
-        if (inventory_productID.getText().isEmpty() ||
-            inventory_productName.getText().isEmpty() ||
-            inventory_type.getSelectionModel().isEmpty() ||
-            inventory_stock.getText().isEmpty() ||
-            inventory_price.getText().isEmpty() ||
-            inventory_status.getSelectionModel().isEmpty() ||
-            data.path == null || data.path.trim().isEmpty() ||
-            data.id == 0) {
+        if (inventory_productID.getText().isEmpty()
+                || inventory_productName.getText().isEmpty()
+                || inventory_type.getSelectionModel().isEmpty()
+                || inventory_stock.getText().isEmpty()
+                || inventory_price.getText().isEmpty()
+                || inventory_status.getSelectionModel().isEmpty()
+                || data.path == null || data.path.isEmpty()
+                || data.id == null|| data.id == 0) {
 
             alert = new Alert(AlertType.ERROR);
             alert.setTitle("Error Message");
@@ -508,7 +674,7 @@ public class MainFormController implements Initializable {
 
     @FXML
     public void inventoryDeleteBtn() {
-        if (data.id == 0) {
+        if (data.id == null || data.id == 0) {
             alert = new Alert(AlertType.ERROR);
             alert.setTitle("Error Message");
             alert.setHeaderText(null);
@@ -604,15 +770,15 @@ public class MainFormController implements Initializable {
                 try (ResultSet result = prepare.executeQuery()) {
                     while (result.next()) {
                         listData.add(new productData(
-                            result.getInt("id"),
-                            result.getString("prod_id"),
-                            result.getString("prod_name"),
-                            result.getString("type"),
-                            result.getInt("stock"),
-                            result.getDouble("price"),
-                            result.getString("status"),
-                            result.getString("image"),
-                            result.getDate("date")
+                                result.getInt("id"),
+                                result.getString("prod_id"),
+                                result.getString("prod_name"),
+                                result.getString("type"),
+                                result.getInt("stock"),
+                                result.getDouble("price"),
+                                result.getString("status"),
+                                result.getString("image"),
+                                result.getDate("date")
                         ));
                     }
                 }
@@ -683,15 +849,15 @@ public class MainFormController implements Initializable {
                 try (ResultSet result = prepare.executeQuery()) {
                     while (result.next()) {
                         listData.add(new productData(
-                            result.getInt("id"),
-                            result.getString("prod_id"),
-                            result.getString("prod_name"),
-                            result.getString("type"),
-                            result.getInt("stock"),
-                            result.getDouble("price"),
-                            result.getString("status"),
-                            result.getString("image"),
-                            result.getDate("date")
+                                result.getInt("id"),
+                                result.getString("prod_id"),
+                                result.getString("prod_name"),
+                                result.getString("type"),
+                                result.getInt("stock"),
+                                result.getDouble("price"),
+                                result.getString("status"),
+                                result.getString("image"),
+                                result.getDate("date")
                         ));
                     }
                 }
@@ -750,14 +916,14 @@ public class MainFormController implements Initializable {
                 try (ResultSet result = prepare.executeQuery()) {
                     while (result.next()) {
                         listData.add(new productData(
-                            result.getInt("id"),
-                            result.getString("prod_id"),
-                            result.getString("prod_name"),
-                            result.getString("type"),
-                            result.getInt("quantity"),
-                            result.getDouble("price"),
-                            result.getString("image"),
-                            result.getDate("date")
+                                result.getInt("id"),
+                                result.getString("prod_id"),
+                                result.getString("prod_name"),
+                                result.getString("type"),
+                                result.getInt("quantity"),
+                                result.getDouble("price"),
+                                result.getString("image"),
+                                result.getDate("date")
                         ));
                     }
                 }
@@ -786,6 +952,7 @@ public class MainFormController implements Initializable {
         getid = prod.getId();
     }
 
+    @FXML
     public void menuRemoveBtn() {
         if (getid == 0) {
             alert = new Alert(AlertType.ERROR);
@@ -829,21 +996,89 @@ public class MainFormController implements Initializable {
         }
     }
 
+    public ObservableList<customersData> customersDataList() {
+
+        ObservableList<customersData> listData = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM receipt";
+        connect = database.connectDB();
+
+        try {
+
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+            customersData cData;
+
+            while (result.next()) {
+                cData = new customersData(result.getInt("id"),
+                        result.getInt("customer_id"),
+                        result.getDouble("total"),
+                        result.getDate("date"),
+                        result.getString("em_username"));
+
+                listData.add(cData);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return listData;
+    }
+
+    private ObservableList<customersData> customersListData;
+
+    public void customersShowData() {
+        customersListData = customersDataList();
+
+        customers_col_customerID.setCellValueFactory(new PropertyValueFactory<>("customerID"));
+        customers_col_total.setCellValueFactory(new PropertyValueFactory<>("total"));
+        customers_col_date.setCellValueFactory(new PropertyValueFactory<>("date"));
+        customers_col_cashier.setCellValueFactory(new PropertyValueFactory<>("emUsername"));
+
+        customers_tableView.setItems(customersListData);
+    }
+
     @FXML
     public void switchForm(ActionEvent event) {
-        dashboard_form.setVisible(event.getSource() == dashboard_btn);
-        inventory_form.setVisible(event.getSource() == inventory_btn);
-        menu_form.setVisible(event.getSource() == menu_btn);
+        if (event.getSource() == dashboard_btn) {
+            dashboard_form.setVisible(true);
+            inventory_form.setVisible(false);
+            menu_form.setVisible(false);
+            customers_form.setVisible(false);
 
-        if (event.getSource() == inventory_btn) {
+            dashboardDisplayNC();
+            dashboardDisplayTI();
+            dashboardTotalI();
+            dashboardNSP();
+            dashboardIncomeChart();
+            dashboardCustomerChart();
+
+        } else if (event.getSource() == inventory_btn) {
+            dashboard_form.setVisible(false);
+            inventory_form.setVisible(true);
+            menu_form.setVisible(false);
+            customers_form.setVisible(false);
+
             inventoryTypeList();
             inventoryStatusList();
             inventoryShowData();
         } else if (event.getSource() == menu_btn) {
+            dashboard_form.setVisible(false);
+            inventory_form.setVisible(false);
+            menu_form.setVisible(true);
+            customers_form.setVisible(false);
+
             menuDisplayCard();
             menuShowOrderData();
             menuDisplayTotal();
+        } else if (event.getSource() == customers_btn) {
+            dashboard_form.setVisible(false);
+            inventory_form.setVisible(false);
+            menu_form.setVisible(false);
+            customers_form.setVisible(true);
+
+            customersShowData();
         }
+
     }
 
     @FXML
