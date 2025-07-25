@@ -1,0 +1,14 @@
+===== Cafeshop Receipt =====
+Date: Sat Jul 26 00:56:11 BDT 2025
+Cashier: System
+Customer ID: 17
+------------------------------------
+Item: asdfgh
+Qty : 1
+Price: $15.00
+------------------------------------
+Total : $15.00
+Paid  : $20.00
+Change: $5.00
+====================================
+   Thank you for shopping with us!   

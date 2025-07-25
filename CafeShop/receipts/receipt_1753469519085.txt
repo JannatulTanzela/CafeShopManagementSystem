@@ -1,0 +1,14 @@
+===== Cafeshop Receipt =====
+Date: Sat Jul 26 00:51:59 BDT 2025
+Cashier: System
+Customer ID: 15
+------------------------------------
+Item: mango juice
+Qty : 1
+Price: $5.00
+------------------------------------
+Total : $5.00
+Paid  : $10.00
+Change: $5.00
+====================================
+   Thank you for shopping with us!   
